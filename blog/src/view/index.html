@@ -2,8 +2,95 @@
 <html>
 	<head>
 		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<title>猫阅</title>
+		<link rel="stylesheet" type="text/css" href="../../dist/public/assets/css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../dist/public/mincss/common/index.min.css" />
+		<style>
+			.color_white{
+				color:#fff !important;
+			}
+			.minh_30{
+				min-height: 30px;
+			}
+			.height30{
+				height: 30px;
+			}
+			.navbar_a{
+				padding-top: 0;
+				padding-bottom: 0;
+				line-height: 30px;
+			}
+			.margintb{
+				margin-top: 0;
+				margin-bottom: 0;
+			}
+			.mt30{
+				margin-top:30px;
+			}
+			.menu{
+				display: flex;
+        width: 50%;
+        margin: auto;
+        justify-content: center;
+        flex-wrap: wrap;
+			}
+			.menu>div{
+				flex: 25%;
+				transition:2s;
+				cursor:pointer;
+			}
+		</style>
 	</head>
 	<body>
+		<nav class="navbar navbar-default navbar-fixed-top navbar-inverse minh_30 height30">
+			<div class="container-fluid height30">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<a class="navbar-brand height30 color_white navbar_a" href="#">
+						CatScope
+					</a>
+				</div>
+				<p class="navbar-text navbar-right height30 margintb" style="margin-right: auto;">
+					<a href="#" class="navbar-link color_white navbar_a">reg | log</a>
+				</p>
+			</div><!-- /.container-fluid -->
+		</nav>
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="pdprecent_t40"></div>
+					<h2 class="text-center">猫阅 | Alice</h2>
+				</div>
+				<div class="col-xs-12">
+					<div class="mt30"></div>
+					<div class="menu"></div>
+				</div>
+			</div>
+		</div>
+		</div>
 	</body>
+	<script type="text/javascript" src="../../dist/public/assets/js/jquery.min.js"></script>
+	<script type="text/javascript" src="../../dist/public/assets/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		var menuary = ['html', 'js', 'css', 'java', 'gulp', 'git', 'album', 'novel']
+		$(function() {
+			$('.pdprecent_t40').css('padding-top', $(window).height() * .3);
+			for (let i = 0; i < menuary.length; i++) {
+				$(".menu").append(`<div class="text-center" style=${fontStylefn()}>${menuary[i]}</div>`)
+			}
+
+			function fontStylefn() {
+				return `font-size:${Math.floor(Math.random()*11)+10}px;opacity:${Math.random()+.5};line-height:80px;`
+			}
+			let oldsize,oldopacity;
+			$('.menu>div').hover(function(){
+				oldsize=$(this).css('font-size');
+				oldopacity=$(this).css('opacity');
+				$(this).css({'font-size':'26px','opacity':'1'})
+			},function(){
+				$(this).css({'font-size':oldsize,'opacity':oldopacity})
+			})
+		})
+	</script>
 </html>

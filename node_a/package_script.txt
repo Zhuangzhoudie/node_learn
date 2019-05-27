@@ -1,0 +1,90 @@
+npm允许在package.json文件里面,使用scripts字段定义脚本命令
+{
+  "scripts": {
+    "build": "node build.js"
+  }
+}
+上面代码事package.json文件的一个片段,里面的scripts字段是一个对象
+它的每一个属性,对应一段脚本.比如,build命令对应的脚本事node build.js
+命令行下使用npm run命令,就可以执行这段脚本.
+npm run build 等同于执行 node build.js
+这些定义在package.json里面的脚本,就被成为npm脚本,优点很多:
+项目的相关脚本,可以集中在一个地方;
+不同项目的脚本命令,只要功能相同,就可以有同样的对外接口(用户不需要知道怎么测试你的项目子要运行npm run test即可);
+可以利用 npm 提供的很多辅助功能
+=======================================
+传参:
+向npm脚本传入参数,要使用--标明
+"lint":"jshint **.js",
+向上面的npm run lint命令传入参数,必须写成下面这样
+npm run lint -- --reporter checkstyle > checkstyle.xml
+也可以在package.json里面再封装一个命令
+"lint":"jshint **.js",
+"lint:checkstyle":"npm run lint -- --reporter checkstyle > checkstyle.xml"
+=======================================
+执行顺序:
+&符号:并行执行,
+&&符号:前一个任务完成,才执行下一个任务,
+两个符号是Bash的功能.
+此外,还可以使用node的任务管理模块:script-runner npm-run-all redrun,
+========================================
+简写形式:
+npm start是npm run start
+npm stop是npm run stop的简写
+npm test是npm run test的简写
+npm restart是npm run stop && npm run restart && npm run start的简写
+=========================================
+变量:
+{
+  "name": "foo", 
+  "version": "1.2.5",
+  "scripts": {
+    "view": "node view.js"
+  }
+}
+最后，env命令可以列出所有环境变量。
+"env": "env"
+=========================================
+常用脚本示例:
+// 删除目录
+"clean": "rimraf dist/*",
+
+// 本地搭建一个 HTTP 服务
+"serve": "http-server -p 9090 dist/",
+
+// 打开浏览器
+"open:dev": "opener http://localhost:9090",
+
+// 实时刷新
+ "livereload": "live-reload --port 9091 dist/",
+
+// 构建 HTML 文件
+"build:html": "jade index.jade > dist/index.html",
+
+// 只要 CSS 文件有变动，就重新执行构建
+"watch:css": "watch 'npm run build:css' assets/styles/",
+
+// 只要 HTML 文件有变动，就重新执行构建
+"watch:html": "watch 'npm run build:html' assets/html",
+
+// 部署到 Amazon S3
+"deploy:prod": "s3-cli sync ./dist/ s3://example-com/prod-site/",
+
+// 构建 favicon
+"build:favicon": "node scripts/favicon.js",
+
+=========================================
+出于好奇，从npm官网上查阅了对于npm audit fix的相关介绍。
+npm audit ： npm@5.10.0 & npm@6，允许开发人员分析复杂的代码，并查明特定的漏洞和缺陷。
+npm audit fix ：npm@6.1.0,  检测项目依赖中的漏洞并自动安装需要更新的有漏洞的依赖，而不必再自己进行跟踪和修复。
+同时，官网中还提供了一些其他的命令，整理如下：
+1. 运行audit fix，但是只更新pkglock， 不更新node_modules：
+$ npm audit fix --package-lock-only
+2. 只更新dependencies中安装的包，跳过devDependencies中的包：
+$ npm audit fix --only=prod
+3.运行命令，得到audit fix将会更新的内容，并且输出json格式的安装信息，但是并不真的安装更新：
+$ npm audit fix --dry-run --json
+4. 得到json格式的详细检测报告
+$ npm audit --json
+附：
+npm-audit 官网地址：https://docs.npmjs.com/cli/audit

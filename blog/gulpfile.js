@@ -1,10 +1,12 @@
-var gulp = require('gulp'),
-	sassMin = require("gulp-sass"),
-	imageMin = require("gulp-imagemin"),
-	autoprefixer = require("gulp-autoprefixer"),
-	cleanCss = require("gulp-clean-css"),
-	rename = require("gulp-rename"),
-	uglify = require('gulp-uglify');
+const gulp = require('gulp');
+const babel = require('gulp-babel');
+const sassMin = require("gulp-sass");
+const imageMin = require("gulp-imagemin");
+const autoprefixer = require("gulp-autoprefixer");
+const cleanCss = require("gulp-clean-css");
+const rename = require("gulp-rename");
+const uglify = require('gulp-uglify');
+const watch = require("gulp-watch");
 //sass编译
 function scss() {
 	return gulp.src('./src/public/css/**/*.scss')
@@ -22,10 +24,11 @@ function scss() {
 function js() {
 	// 1. 找到文件
 	return gulp.src('./src/public/js/**/*.js')
+		.pipe(babel({
+                presets: ['es2015'] // es5检查机制
+            }))
 		// 2. 压缩文件
-		.pipe(uglify({
-			mangle: false
-		}))
+		.pipe(uglify())
 		.pipe(rename({
 			suffix: '.min'
 		}))
@@ -56,3 +59,9 @@ function assets() {
 //gulp.series：按照顺序执行
 //gulp.parallel：可以并行计算
 gulp.task('default', gulp.parallel(scss, js, img, assets));
+gulp.task('dev', function() {
+	gulp.watch('./src/public/js/**/*.js', gulp.series(js));
+	gulp.watch('./src/public/css/**/*.scss', gulp.series(scss));
+	gulp.watch('./src/public/img/**/*.{png,jpg,gif,ico}', gulp.series(img));
+
+})
